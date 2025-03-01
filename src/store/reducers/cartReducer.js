@@ -5,12 +5,12 @@ const CART_INCREASE_QUANTITY = "cart/increaseQuantity";
 const CART_DECREASE_QUANTITY = "cart/decreaseQuantity";
 
 // Action Creators
-export function addItemToCart(productId , quantity = 1) {
-  return { type: CART_ADD_ITEM, payload: { productId , quantity} };
+export function addItemToCart(productData) {
+  return { type: CART_ADD_ITEM, payload: productData };
 }
 
 export function removeItemFromCart(productId) {
-  return { type: CART_REMOVE_ITEM , payload : {productId}};
+  return { type: CART_REMOVE_ITEM, payload: { productId } };
 }
 
 export function increaseItemQuantity(productId) {
@@ -25,28 +25,32 @@ export function decreaseItemQuantity(productId) {
 export default function cartReducer(state = [], action) {
   switch (action.type) {
     case CART_ADD_ITEM:
-      return [...state, action.payload];
+      // eslint-disable-next-line no-case-declarations
+      const itemExist = state.find((item) => item.id === action.payload.id);
+
+      if (itemExist) {
+        return state.map((cartItem) =>
+          cartItem.id === itemExist.id
+            ? { ...cartItem, quantity: cartItem.quantity + 1 }
+            : cartItem
+        );
+      }
+      return [...state, { ...action.payload, quantity: 1 }];
 
     case CART_REMOVE_ITEM:
-      return state.filter(
-        (item) => item.productId !== action.payload.productId
-      );
+      return state.filter((item) => item.id !== action.payload.productId);
 
     case CART_INCREASE_QUANTITY:
       return state.map((item) =>
-        item.productId === action.payload.productId
+        item.id === action.payload.productId
           ? { ...item, quantity: item.quantity + 1 }
           : item
       );
 
     case CART_DECREASE_QUANTITY:
       return state.map((item) => {
-        if (item.productId === action.payload.productId) {
-          if (item.quantity === 1) {
-            return null;
-          } else {
-            return { ...item, quantity: item.quantity - 1 };
-          }
+        if (item.id === action.payload.productId) {
+          return { ...item, quantity: item.quantity - 1 };
         }
         return item;
       });

@@ -1,10 +1,6 @@
-import React from 'react'
-import Navbar from '../components/Navbar';
-
-const Home = ({cart , setCart}) => {
+const Home = () => {
   return (
     <div>
-      <Navbar cart={cart} setCart={setCart} />
       <div>Home</div>
     </div>
   );
