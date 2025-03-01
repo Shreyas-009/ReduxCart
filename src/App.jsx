@@ -6,7 +6,7 @@ import { Routes, Route } from "react-router-dom";
 
 const App = () => {
   return (
-    <div className="bg-zinc-900 flex flex-col w-full h-screen text-white">
+    <div className="bg-zinc-900 flex flex-col w-full h-screen overflow-hidden text-white">
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />

@@ -1,6 +1,7 @@
 // Action types
 const CART_ADD_ITEM = "cart/addItem";
 const CART_REMOVE_ITEM = "cart/removeItem";
+const EMPTY_CART = "cart/removeAll";
 const CART_INCREASE_QUANTITY = "cart/increaseQuantity";
 const CART_DECREASE_QUANTITY = "cart/decreaseQuantity";
 
@@ -21,6 +22,10 @@ export function decreaseItemQuantity(productId) {
   return { type: CART_DECREASE_QUANTITY, payload: { productId } };
 }
 
+export function emptyCart() {
+  return { type: EMPTY_CART };
+}
+
 // Reducer
 export default function cartReducer(state = [], action) {
   switch (action.type) {
@@ -39,6 +44,9 @@ export default function cartReducer(state = [], action) {
 
     case CART_REMOVE_ITEM:
       return state.filter((item) => item.id !== action.payload.productId);
+
+    case EMPTY_CART:
+      return [];
 
     case CART_INCREASE_QUANTITY:
       return state.map((item) =>

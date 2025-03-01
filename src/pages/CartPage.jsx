@@ -4,6 +4,7 @@ import deleteLogoStill from "../assets/delete_Gif._Icon.png";
 import {
   decreaseItemQuantity,
   increaseItemQuantity,
+  emptyCart,
   removeItemFromCart,
 } from "../store/reducers/cartReducer";
 
@@ -11,16 +12,10 @@ const CartPage = () => {
   const dispatch = useDispatch();
   const cartProducts = useSelector((state) => state.cartItems);
 
-  const totalPrice = () => {
-    let price = 0;
-    cartProducts.map((product) => (price += product.price));
-    return price;
-  };
-
   return (
     <div
       className="
-             flex flex-col bg-zinc-800 w-full gap-4 p-2 rounded-b-none h-full md:shadow-2x  transition-all duration-700 ease-in-out"
+             flex flex-col bg-zinc-800 w-full gap-4 p-2 rounded-b-none h-[92.7%] md:shadow-2x  transition-all duration-700 ease-in-out"
     >
       <div className="flex justify-between">
         <div className="flex items-center">
@@ -33,12 +28,13 @@ const CartPage = () => {
           className={`${
             cartProducts.length > 0 ? "block" : "hidden"
           } bg-purple-500  rounded-md hover:bg-purple-700 px-3 py-1`}
+          onClick={() => dispatch(emptyCart())}
         >
           Empty Cart
         </button>
       </div>
       <hr />
-      <div className="flex flex-col flex-1 gap-3 overflow-y-scroll  scrollBar">
+      <div className="flex flex-col flex-1 gap-3 overflow-auto scrollBar">
         <div
           className={`${
             cartProducts.length > 0 ? "hidden" : "block"
@@ -53,17 +49,21 @@ const CartPage = () => {
               key={product.id}
               className="product_card flex gap-3 md:gap-6 p-3 items-center bg-zinc-700 rounded-lg "
             >
-              <div className="img h-24 w-24 rounded-xl overflow-hidden">
-                <img src={product.image} alt="" />
+              <div className="img h-24 w-24 rounded-xl bg-white overflow-hidden">
+                <img
+                  className="object-contain w-full h-full"
+                  src={product.image}
+                  alt=""
+                />
               </div>
               <div className="card_info flex flex-col gap-2 bg-zinc-700  rounded-xl flex-1">
-                <h1 className="card_name text-xl line-clamp-1 select-none">
-                  {product.name}
+                <h1 className="card_name text-xl line-clamp-1 select-none max-w-40 md:max-w-80">
+                  {product.title}
                 </h1>
                 <div className="flex gap-7 items-center">
                   <p className="card_price text-2xl  md:text-2xl text-purple-500 select-none flex gap-2">
-                    <span>Rs</span>
                     <span>{product.price}</span>
+                    <span>$</span>
                   </p>
                   <div className="add grid grid-flow-col  w-24  text-center  content-center items-center">
                     <button
@@ -137,7 +137,14 @@ const CartPage = () => {
           <h1 className="text-2xl font-semibold py-1">Total Price : </h1>
 
           <h1 className="text-2xl font-semibold text-purple-400 ">
-            {totalPrice()} $
+            {cartProducts
+              .reduce(
+                (TotalPrice, currentItem) =>
+                  TotalPrice + currentItem.price * currentItem.quantity,
+                0
+              )
+              .toFixed()}{" "}
+            $
           </h1>
         </div>
       </div>
