@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import star from "../assets/star.svg";
 import halfStar from "../assets/star-half.svg";
-import { addItemToCart } from "../store/reducers/cartReducer";
+import { addItemToCart } from "../store/slices/cartSlice";
 import {
   addItemToWishlist,
   removeItemFromWishlist,
-} from "../store/reducers/wishListReducer";
+} from "../store/slices/wishListSlice";
 
 const Card = () => {
   const dispatch = useDispatch();
@@ -24,12 +24,12 @@ const Card = () => {
               <div
                 className="w-4 h-4 rounded-full absolute top-2 right-3 bg-purple-600 flex justify-center items-center py-3 px-3 cursor-pointer "
                 onClick={() => {
-                  wishListItems.find((item) => item.productId === product.id)
+                  wishListItems.find((item) => item === product.id)
                     ? dispatch(removeItemFromWishlist(product.id))
-                    : dispatch(addItemToWishlist(product.id))
+                    : dispatch(addItemToWishlist(product.id));
                 }}
               >
-                {wishListItems.find((item) => item.productId === product.id)
+                {wishListItems.find((item) => item === product.id)
                   ? "❤️"
                   : "🤍"}
               </div>

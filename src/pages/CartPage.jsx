@@ -6,7 +6,7 @@ import {
   increaseItemQuantity,
   emptyCart,
   removeItemFromCart,
-} from "../store/reducers/cartReducer";
+} from "../store/slices/cartSlice";
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -70,8 +70,8 @@ const CartPage = () => {
                       className=" bg-purple-500 rounded-md hover:bg-purple-700 "
                       onClick={() => {
                         product.quantity === 1
-                          ? dispatch(removeItemFromCart(product.id))
-                          : dispatch(decreaseItemQuantity(product.id));
+                          ? dispatch(removeItemFromCart({ id: product.id }))
+                          : dispatch(decreaseItemQuantity({ id: product.id }));
                       }}
                     >
                       <svg
@@ -85,7 +85,9 @@ const CartPage = () => {
                     <h1 className="select-none">{product.quantity}</h1>
                     <button
                       className=" bg-purple-500 rounded-md hover:bg-purple-700"
-                      onClick={() => dispatch(increaseItemQuantity(product.id))}
+                      onClick={() =>
+                        dispatch(increaseItemQuantity({ id: product.id }))
+                      }
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
