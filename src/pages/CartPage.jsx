@@ -7,6 +7,8 @@ import {
   emptyCart,
   removeItemFromCart,
 } from "../store/slices/cartSlice";
+import star from "../assets/star.svg";
+import halfStar from "../assets/star-half.svg";
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -60,6 +62,27 @@ const CartPage = () => {
                 <h1 className="card_name text-xl line-clamp-1 select-none max-w-40 md:max-w-80">
                   {product.title}
                 </h1>
+                <div className="flex gap-2">
+                  <h1 className="price text-xl font-semibold text-zinc-100">
+                    {product.rating.rate}
+                  </h1>
+                  <div className="flex items-center gap-1">
+                    {Array.from({ length: product.rating.rate }).map(
+                      (_, index) => (
+                        <div key={index}>
+                          <img src={star} alt="star" className="w-4 h-4" />
+                          {index === product.rating.rate - 1 && (
+                            <img
+                              src={halfStar}
+                              alt="star"
+                              className="w-4 h-4"
+                            />
+                          )}
+                        </div>
+                      )
+                    )}
+                  </div>
+                </div>
                 <div className="flex gap-7 items-center">
                   <p className="card_price text-2xl  md:text-2xl text-purple-500 select-none flex gap-2">
                     <span>{product.price}</span>

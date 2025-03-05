@@ -7,6 +7,7 @@ import {
   removeItemFromWishlist,
 } from "../store/slices/wishListSlice";
 
+
 const Card = () => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products);
